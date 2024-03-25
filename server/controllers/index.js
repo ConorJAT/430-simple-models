@@ -1,5 +1,6 @@
 // pull in our models. This will automatically load the index.js from that folder
 const models = require('../models');
+
 const { Cat } = models;
 const { Dog } = models;
 
@@ -7,9 +8,9 @@ const hostIndex = async (req, res) => {
   let name = 'unknown';
 
   try {
-    const doc = await Cat.findOne({}).sort({'createdDate': 'descending'}).lean().exec();
+    const doc = await Cat.findOne({}).sort({ createdDate: 'descending' }).lean().exec();
 
-    if(doc) {
+    if (doc) {
       name = doc.name;
     }
   } catch (err) {
@@ -19,14 +20,14 @@ const hostIndex = async (req, res) => {
   res.render('index', {
     currentName: name,
     title: 'Home',
-    pageName: 'Home Page'
+    pageName: 'Home Page',
   });
 };
 
 const hostPage1 = async (req, res) => {
   try {
     const docs = await Cat.find({}).lean().exec();
-    return res.render('page1', {cats: docs});
+    return res.render('page1', { cats: docs });
   } catch (err) {
     console.log(err);
     return res.render('page1');
@@ -43,16 +44,16 @@ const hostPage3 = (req, res) => {
 
 const getName = async (req, res) => {
   try {
-    const doc = await Cat.findOne({}).sort({'createdDate': 'descending'}).lean().exec();
+    const doc = await Cat.findOne({}).sort({ createdDate: 'descending' }).lean().exec();
 
-    if(!doc) {
-      return res.status(404).json({error: 'No cat found.'});
+    if (!doc) {
+      return res.status(404).json({ error: 'No cat found.' });
     }
 
-    return res.json({name: doc.name});
+    return res.json({ name: doc.name });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Something went wrong connecting to database.'});
+    return res.status(500).json({ error: 'Something went wrong connecting to database.' });
   }
 };
 
@@ -60,7 +61,7 @@ const setName = async (req, res) => {
   if (!req.body.firstname || !req.body.lastname || !req.body.beds) {
     return res.status(400).json({ error: 'firstname, lastname and beds are all required' });
   }
-  
+
   const catData = {
     name: `${req.body.firstname} ${req.body.lastname}`,
     bedsOwned: req.body.beds,
@@ -76,7 +77,7 @@ const setName = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Failed to create cat.'});
+    return res.status(500).json({ error: 'Failed to create cat.' });
   }
 };
 
@@ -86,27 +87,27 @@ const searchName = async (req, res) => {
   }
 
   try {
-    const doc = await Cat.findOne({name: req.query.name}).select('name bedsOwned').exec();
+    const doc = await Cat.findOne({ name: req.query.name }).select('name bedsOwned').exec();
 
-    if (!doc){
-      return res.status(404).json({ error: `No cat found with the name ${req.query.name}.`});
+    if (!doc) {
+      return res.status(404).json({ error: `No cat found with the name ${req.query.name}.` });
     }
 
-    return res.json({ name: doc.name, beds: doc.bedsOwned});
+    return res.json({ name: doc.name, beds: doc.bedsOwned });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Something went wrong connecting to database.'});
+    return res.status(500).json({ error: 'Something went wrong connecting to database.' });
   }
 };
 
 const updateLast = async (req, res) => {
-	try {
-    const doc = await Cat.findOneAndUpdate({}, {$inc: {bedsOwned: 1}}, {returnDocument: 'after', sort: {'createdDate': 'descending'}}).lean().exec();
+  try {
+    const doc = await Cat.findOneAndUpdate({}, { $inc: { bedsOwned: 1 } }, { returnDocument: 'after', sort: { createdDate: 'descending' } }).lean().exec();
 
-    return res.json({name: doc.name, beds: doc.bedsOwned});
+    return res.json({ name: doc.name, beds: doc.bedsOwned });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Something went wrong connecting to database.'});
+    return res.status(500).json({ error: 'Something went wrong connecting to database.' });
   }
 };
 
@@ -116,13 +117,12 @@ const notFound = (req, res) => {
   });
 };
 
-
 // -- FUNCTIONS ADDED FOR MVC MODELS ASSIGNMENT --
 const createDog = async (req, res) => {
   if (!req.body.firstname || !req.body.lastname || !req.body.breed || !req.body.age) {
     return res.status(400).json({ error: 'FirstName, LastName, Breed and Age are all required.' });
   }
-  
+
   const dogData = {
     name: `${req.body.firstname} ${req.body.lastname}`,
     breed: req.body.breed,
@@ -140,7 +140,7 @@ const createDog = async (req, res) => {
     });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Failed to create dog.'});
+    return res.status(500).json({ error: 'Failed to create dog.' });
   }
 };
 
@@ -150,23 +150,23 @@ const editDog = async (req, res) => {
   }
 
   try {
-    const doc = await Dog.findOneAndUpdate({name: req.body.name}, {$inc: {age: 1}}, {returnDocument: 'after'}).lean().exec();
+    const doc = await Dog.findOneAndUpdate({ name: req.body.name }, { $inc: { age: 1 } }, { returnDocument: 'after' }).lean().exec();
 
-    if (!doc){
-      return res.status(404).json({ error: `No dog found with the name ${req.body.name}.`});
+    if (!doc) {
+      return res.status(404).json({ error: `No dog found with the name ${req.body.name}.` });
     }
 
-    return res.json({ name: doc.name, breed: doc.breed, age: doc.age});
+    return res.json({ name: doc.name, breed: doc.breed, age: doc.age });
   } catch (err) {
     console.log(err);
-    return res.status(500).json({ error: 'Something went wrong connecting to database.'});
+    return res.status(500).json({ error: 'Something went wrong connecting to database.' });
   }
 };
 
 const hostPage4 = async (req, res) => {
   try {
     const docs = await Dog.find({}).lean().exec();
-    return res.render('page4', {dogs: docs});
+    return res.render('page4', { dogs: docs });
   } catch (err) {
     console.log(err);
     return res.render('page4');

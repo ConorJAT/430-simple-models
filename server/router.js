@@ -16,7 +16,7 @@ const router = (app) => {
   app.get('/page1', controllers.page1);
   app.get('/page2', controllers.page2);
   app.get('/page3', controllers.page3);
-  app.get('/page4', controllers.page4)
+  app.get('/page4', controllers.page4);
   app.get('/getName', controllers.getName);
   app.get('/findByName', controllers.searchName);
 
@@ -34,6 +34,7 @@ const router = (app) => {
   // When someone POSTS to /updateLast, call controllers.updateLast
   app.post('/updateLast', controllers.updateLast);
 
+  // -- POST ROUTES ADDED FOR MVC MODELS ASSIGNMENT --
   app.post('/createDog', controllers.createDog);
   app.post('/editDog', controllers.editDog);
 };
