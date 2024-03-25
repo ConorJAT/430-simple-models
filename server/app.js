@@ -24,10 +24,10 @@ const router = require('./router.js');
 // otherwise fallback to localhost.
 // The string after mongodb://localhost is the database name. It can be anything you want.
 
-// const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/430-simple-models';
-const dbURI = 'mongodb+srv://ctr9664:kMDbJ8ot2rORWqrz@'
-+ 'cluster0.k6wsxy2.mongodb.net/430-simple-models?'
-+ 'retryWrites=true&w=majority&appName=Cluster0';
+const dbURI = process.env.MONGODB_URI || 'mongodb://127.0.0.1/430-simple-models';
+// const dbURI = 'mongodb+srv://ctr9664:kMDbJ8ot2rORWqrz@'
+// + 'cluster0.k6wsxy2.mongodb.net/430-simple-models?'
+// + 'retryWrites=true&w=majority&appName=Cluster0';
 // NOTE: process.env.MONGO_URI was not working as intended on Heroku.
 //       Decided to hard code the cloud URI into the project.
 
